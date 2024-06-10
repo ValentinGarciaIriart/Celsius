@@ -1,9 +1,9 @@
 steps:
-  # Step 1: List directories
-  - name: 'gcr.io/cloud-builders/npm'
+  # Step 1: Run your shell script
+  - name: 'bash'
     args:
-      - 'run'
-      - 'test'
+      - '-c'
+      - 'chmod +x ./run_tests.sh; ./run_tests.sh'
   # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
