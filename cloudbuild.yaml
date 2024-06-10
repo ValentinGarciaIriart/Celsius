@@ -34,6 +34,19 @@ steps:
       - 'push'
       - 'valentingarciairiart/celfahr:js'
 
+  # Step 6: Deploy to Cloud Run
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'celfahr-service'
+      - '--image'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js'
+      - '--platform'
+      - 'managed'
+      - '--region'
+      - 'us-central1'
+
 # Lista de imágenes para que Cloud Build las reconozca
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js'
