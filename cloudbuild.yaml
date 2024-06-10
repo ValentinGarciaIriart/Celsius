@@ -2,6 +2,8 @@ steps:
   # Step 1: Run Jest tests
   - name: 'gcr.io/cloud-builders/npm'
     args:
+      - 'install'
+      - 'jest'
       - 'run'
       - 'test' 
 
