@@ -1,37 +1,28 @@
 steps:
-  # Step 1: Install Jest
-  - name: 'gcr.io/cloud-builders/npm'
-    args:
-      - 'install'
-      - 'jest'
-
-  # Step 2: Run Jest tests
+  # Step 1: Run Jest tests
   - name: 'gcr.io/cloud-builders/npm'
     args:
       - 'run'
-      - 'test' 
-
-  # Step 2: Construir la imagen Docker si los tests pasan
+      - 'test'
+    # Exit the build if tests fail
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
       - '-t'
       - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js'
       - '.'
-
-  # Step 3: Push la imagen a Artifact Registry
+  # Step 2: Push the image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js'
-  # Step 4: Tag la imagen para Docker Hub
+  # Step 3: Tag the image for Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'tag'
       - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js'
       - 'valentingarciairiart/celfahr:js'
-
-  # Step 5: Login en Docker Hub
+  # Step 4: Login to Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'login'
@@ -39,14 +30,12 @@ steps:
       - '${_DOCKER_USERNAME}'
       - '-p'
       - '${_DOCKER_PASSWORD}'
-
-  # Step 6: Push la imagen a Docker Hub
+  # Step 5: Push the image to Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'valentingarciairiart/celfahr:js'
-
-  # Step 7: Deploy to Cloud Run
+  # Step 6: Deploy to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       - 'run'
@@ -62,7 +51,7 @@ steps:
       - '3000'
       - '--allow-unauthenticated' 
 
-# Lista de imágenes para que Cloud Build las reconozca
+# List of images for Cloud Build to recognize
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js'
   - 'valentingarciairiart/celfahr:js'
