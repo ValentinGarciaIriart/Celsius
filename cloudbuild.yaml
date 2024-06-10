@@ -31,13 +31,9 @@ steps:
     args:
       - '-c'
       - 'echo "$PASSWORD" | docker login --username="$USERNAME" --password-stdin'
-    secretEnv: ['USERNAME','PASSWORD']
-    availableSecrets:
-      secretManager:
-      - versionName: projects/still-descent-423419-c7/secrets/dckpsw/versions/latest
-        env: 'PASSWORD'
-      - versionName: projects/still-descent-423419-c7/secrets/dckusr/versions/latest
-        env: 'USERNAME'
+    secretEnv:
+      - 'USERNAME'
+      - 'PASSWORD'
   # Step 7: Push the image to Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
     args:
@@ -63,4 +59,3 @@ steps:
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
   - 'valentingarciairiart/celfahr:js2'
-  
