@@ -1,9 +1,14 @@
 steps:
-  # Step 1: Run your shell script
-  - name: 'bash'
-    args:
-      - '-c'
-      - 'chmod +x ./run_tests.sh; ./run_tests.sh'
+  # Step 1: Install dependencies
+  - name: 'node'
+    entrypoint: 'npm'
+    args: 
+      - 'install'
+  # Step 2: Run tests
+  - name: 'node'
+    entrypoint: 'npm'
+    args: 
+      - 'test'
   # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
