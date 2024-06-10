@@ -3,7 +3,7 @@ steps:
   - name: 'bash'
     args:
       - '-c'
-      - 'chmod +x ./run_tests.sh; ls -l; ./run_tests.sh'
+      - 'chmod +x ./run_tests.sh; ls -l; run_tests.sh'
   # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
