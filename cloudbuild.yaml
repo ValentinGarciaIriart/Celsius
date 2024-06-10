@@ -34,7 +34,16 @@ steps:
       - 'push'
       - 'valentingarciairiart/celfahr:js'
 
-  # Step 6: Deploy to Cloud Run
+  # Step 6: ReLogin en Docker Hub
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'login'
+      - '-u'
+      - '${_DOCKER_USERNAME}'
+      - '-p'
+      - '${_DOCKER_PASSWORD}'
+
+  # Step 7: Deploy to Cloud Run
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'run'
