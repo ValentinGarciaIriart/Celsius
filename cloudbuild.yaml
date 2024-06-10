@@ -3,7 +3,7 @@ steps:
   - name: 'gcr.io/cloud-builders/npm'
     args:
       - 'run'
-      - 'ls'
+      - 'test'
   # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
