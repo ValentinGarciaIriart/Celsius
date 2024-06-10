@@ -13,8 +13,6 @@ RUN npm install
 # Copia el resto de los archivos de la aplicación
 COPY . .
 
-RUN npm test
-
 EXPOSE 3000
 
 CMD ["node", "index.js"]
