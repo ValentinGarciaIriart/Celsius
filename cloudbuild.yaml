@@ -9,19 +9,19 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
       - '.'
   # Step 2: Push the image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
   # Step 3: Tag the image for Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'tag'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js'
-      - 'valentingarciairiart/celfahr:js'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
+      - 'valentingarciairiart/celfahr:js2'
   # Step 4: Login to Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
     args:
@@ -34,7 +34,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'valentingarciairiart/celfahr:js'
+      - 'valentingarciairiart/celfahr:js2'
   # Step 6: Deploy to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
@@ -42,7 +42,7 @@ steps:
       - 'deploy'
       - 'celsiusfahr-service'
       - '--image'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
       - '--region'
       - 'us-central1'
       - '--platform'
@@ -53,5 +53,5 @@ steps:
 
 # List of images for Cloud Build to recognize
 images:
-  - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js'
-  - 'valentingarciairiart/celfahr:js'
+  - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
+  - 'valentingarciairiart/celfahr:js2'
