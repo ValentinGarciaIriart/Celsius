@@ -2,6 +2,7 @@ steps:
   # Step 1: List directories
   - name: 'gcr.io/cloud-builders/npm'
     args:
+      - 'run'
       - 'ls'
   # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
