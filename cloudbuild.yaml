@@ -38,7 +38,7 @@ steps:
     args:
       - '-c'
       - |
-        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+        echo "$$DOCKER_PASSWORD" | docker login -u "$$DOCKER_USER" --password-stdin
     secretEnv: ['DOCKER_USER', 'DOCKER_PASSWORD']
   
   # Step 7: Push the image to Docker Hub
