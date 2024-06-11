@@ -1,0 +1,93 @@
+{
+    "steps": [
+      {
+        "name": "node",
+        "entrypoint": "npm",
+        "args": [
+          "install"
+        ]
+      },
+      {
+        "name": "node",
+        "entrypoint": "npm",
+        "args": [
+          "test"
+        ]
+      },
+      {
+        "name": "gcr.io/cloud-builders/docker",
+        "args": [
+          "build",
+          "-t",
+          "us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2",
+          "."
+        ]
+      },
+      {
+        "name": "gcr.io/cloud-builders/docker",
+        "args": [
+          "push",
+          "us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2"
+        ]
+      },
+      {
+        "name": "gcr.io/cloud-builders/docker",
+        "args": [
+          "tag",
+          "us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2",
+          "valentingarciairiart/celfahr:js2"
+        ]
+      },
+      {
+        "name": "gcr.io/cloud-builders/docker",
+        "entrypoint": "bash",
+        "args": [
+          "-c",
+          "echo \"$$dckpsw\" | docker login --username=\"$$dckusr\" --password-stdin"
+        ],
+        "secretEnv": [
+          "dckusr",
+          "dckpsw"
+        ]
+      },
+      {
+        "name": "gcr.io/cloud-builders/docker",
+        "args": [
+          "push",
+          "valentingarciairiart/celfahr:js2"
+        ]
+      },
+      {
+        "name": "gcr.io/cloud-builders/gcloud",
+        "args": [
+          "run",
+          "deploy",
+          "celsiusfahr-service",
+          "--image",
+          "us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2",
+          "--region",
+          "us-central1",
+          "--platform",
+          "managed",
+          "--port",
+          "3000",
+          "--allow-unauthenticated"
+        ]
+      }
+    ],
+    "images": [
+      "us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2",
+      "valentingarciairiart/celfahr:js2"
+    ],
+    "availableSecrets": [
+      {
+        "secretEnv": "dckusr",
+        "kmsKeyName": "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"
+      },
+      {
+        "secretEnv": "dckpsw",
+        "kmsKeyName": "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
+      }
+    ]
+  }
+  
