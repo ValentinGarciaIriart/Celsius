@@ -55,26 +55,35 @@ steps:
       - '--port'
       - '3000'
       - '--allow-unauthenticated' 
-  # Step 9: Conditional deployment or apply
+  # Step 9: reapply la configuracion existente
   - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'delete'
+      - 'namespace'
+      - 'valenfahr'
+      - 'create'
+      - 'namespace'
+      - 'valenfahr'
+      - 'apply'
+      - '-f'
+      - 'deployment.yaml'
+      - '-n'
+      - 'valenfahr'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
+  - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        if kubectl get deployment celsiusfahr-deployment -n valenfahr 2>/dev/null && kubectl get service celsiusfahr-service -n valenfahr 2>/dev/null; then
-          kubectl apply -f deployment.yaml -n valenfahr --force
-        elif kubectl get deployment celsiusfahr-deployment -n valenfahr 2>/dev/null || kubectl get service celsiusfahr-service -n valenfahr 2>/dev/null; then
-          kubectl delete deployment celsiusfahr-deployment -n valenfahr
-          kubectl delete service celsiusfahr-service -n valenfahr
-          kubectl apply -f deployment.yaml -n valenfahr
-        else
-          kubectl apply -f deployment.yaml -n valenfahr
-        fi
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
+        gcloud auth activate-service-account --key-file=/dev/null \
+          --client-id="$$AZURE_CLIENT_ID" \
+          --client-secret="$$AZURE_CLIENT_SECRET" \
+          --tenant-id="$$AZURE_TENANT_ID"
+    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET','AZURE_TENANT_ID']
 
-# Lista de imágenes para que Cloud Build las reconozca
+# List of images for Cloud Build to recognize
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
   - 'valentingarciairiart/celfahr:js2'
@@ -85,4 +94,9 @@ availableSecrets:
     env: "DOCKER_USER"
   - versionName: "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
     env: "DOCKER_PASSWORD"
-    
+  - versionName: "projects/still-descent-423419-c7/secrets/azclid/versions/latest"
+    env: "AZURE_CLIENT_ID"
+  - versionName: "projects/still-descent-423419-c7/secrets/azclisec/versions/latest"
+    env: "AZURE_CLIENT_SECRET"
+  - versionName: "projects/still-descent-423419-c7/secrets/aztenant/versions/latest"
+    env: "AZURE_TENANT_ID"  
