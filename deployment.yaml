@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: celfahr-container
-          image: us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2
+          image: valentingarciairiart/celfahr:js2
           ports:
             - containerPort: 3000
           resources:
