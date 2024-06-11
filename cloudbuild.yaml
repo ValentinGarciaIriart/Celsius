@@ -61,8 +61,12 @@ steps:
     args:
       - '-c'
       - |
-        if kubectl get deployment -n valenfahr 2>/dev/null || kubectl get service -n valenfahr 2>/dev/null; then
+        if kubectl get deployment celsiusfahr-deployment -n valenfahr 2>/dev/null && kubectl get service celsiusfahr-service -n valenfahr 2>/dev/null; then
           kubectl apply -f deployment.yaml -n valenfahr --force
+        elif kubectl get deployment celsiusfahr-deployment -n valenfahr 2>/dev/null || kubectl get service celsiusfahr-service -n valenfahr 2>/dev/null; then
+          kubectl delete deployment celsiusfahr-deployment -n valenfahr
+          kubectl delete service celsiusfahr-service -n valenfahr
+          kubectl apply -f deployment.yaml -n valenfahr
         else
           kubectl apply -f deployment.yaml -n valenfahr
         fi
@@ -70,7 +74,7 @@ steps:
       - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
 
-# List of images for Cloud Build to recognize
+# Lista de imágenes para que Cloud Build las reconozca
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
   - 'valentingarciairiart/celfahr:js2'
