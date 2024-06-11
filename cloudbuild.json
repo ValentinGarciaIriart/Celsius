@@ -15,10 +15,10 @@
     ],
     "availableSecrets": {
       "dckusr": {
-        "secretManager": "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"
+        "secretManager": "projects/395145178509/secrets/dckusr/versions/latest"
       },
       "dckpsw": {
-        "secretManager": "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
+        "secretManager": "projects/395145178509/secrets/dckpsw/versions/latest"
       }
     }
   }
