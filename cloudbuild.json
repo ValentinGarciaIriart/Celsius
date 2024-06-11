@@ -32,14 +32,6 @@
       },
       {
         "name": "gcr.io/cloud-builders/docker",
-        "args": [
-          "tag",
-          "us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2",
-          "valentingarciairiart/celfahr:js2"
-        ]
-      },
-      {
-        "name": "gcr.io/cloud-builders/docker",
         "entrypoint": "bash",
         "args": [
           "-c",
@@ -48,13 +40,6 @@
         "secretEnv": [
           "dckusr",
           "dckpsw"
-        ]
-      },
-      {
-        "name": "gcr.io/cloud-builders/docker",
-        "args": [
-          "push",
-          "valentingarciairiart/celfahr:js2"
         ]
       },
       {
@@ -76,8 +61,7 @@
       }
     ],
     "images": [
-      "us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2",
-      "valentingarciairiart/celfahr:js2"
+      "us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2"
     ],
     "availableSecrets": [
       {
