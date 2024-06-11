@@ -46,17 +46,68 @@ steps:
     args:
       - 'push'
       - 'valentingarciairiart/celfahr:js2'
-
+  
+  # Step 8: Deploy to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'celsiusfahr-service'
+      - '--image'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--port'
+      - '3000'
+      - '--allow-unauthenticated'
+  
+  # Step 9: Configurar kubectl para acceder a tu clúster de GKE
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'container'
+      - 'clusters'
+      - 'get-credentials'
+      - '--project=still-descent-423419-c7'
+      - '--zone=$_CLUSTER_ZONE'
+      - '$_CLUSTER_NAME'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
+  
+  # Step 10: Eliminar el namespace existente (si lo hay)
+  - name: 'gcr.io/cloud-builders/kubectl'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        gcloud auth activate-service-account --key-file=/dev/null \
-          --client-id="$$AZURE_CLIENT_ID" \
-          --client-secret="$$AZURE_CLIENT_SECRET" \
-          --tenant-id="$$AZURE_TENANT_ID"
-    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET','AZURE_TENANT_ID']
+        kubectl delete namespace valenfahr || echo "Namespace valenfahr does not exist, continuing..."
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
+  
+  # Step 11: Crear un nuevo namespace
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'create'
+      - 'namespace'
+      - 'valenfahr'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
+  
+  # Step 12: Aplicar el manifiesto de Kubernetes
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'apply'
+      - '-f'
+      - 'deployment.yaml'
+      - '-n'
+      - 'valenfahr'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
 
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
@@ -68,9 +119,3 @@ availableSecrets:
     env: "DOCKER_USER"
   - versionName: "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
     env: "DOCKER_PASSWORD"
-  - versionName: "projects/still-descent-423419-c7/secrets/azclid/versions/latest"
-    env: "AZURE_CLIENT_ID"
-  - versionName: "projects/still-descent-423419-c7/secrets/azclisec/versions/latest"
-    env: "AZURE_CLIENT_SECRET"
-  - versionName: "projects/still-descent-423419-c7/secrets/aztenant/versions/latest"
-    env: "AZURE_TENANT_ID"  
