@@ -62,7 +62,7 @@ steps:
       - '--port'
       - '3000'
       - '--allow-unauthenticated'
-
+  
   # Step 9: Configurar kubectl para acceder a tu clúster de GKE
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
@@ -75,7 +75,7 @@ steps:
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
-
+  
   # Step 10: Eliminar el namespace existente (si lo hay)
   - name: 'gcr.io/cloud-builders/kubectl'
     entrypoint: 'bash'
@@ -83,6 +83,9 @@ steps:
       - '-c'
       - |
         kubectl delete namespace valenfahr || echo "Namespace valenfahr does not exist, continuing..."
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
   
   # Step 11: Crear un nuevo namespace
   - name: 'gcr.io/cloud-builders/kubectl'
@@ -90,6 +93,9 @@ steps:
       - 'create'
       - 'namespace'
       - 'valenfahr'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
   
   # Step 12: Aplicar el manifiesto de Kubernetes
   - name: 'gcr.io/cloud-builders/kubectl'
@@ -99,6 +105,9 @@ steps:
       - 'deployment.yaml'
       - '-n'
       - 'valenfahr'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
 
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
