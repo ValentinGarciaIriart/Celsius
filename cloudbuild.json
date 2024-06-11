@@ -1,26 +1,27 @@
 {
-  "steps": [
-    {
-      "name": "gcr.io/cloud-builders/docker",
-      "entrypoint": "bash",
-      "args": [
-        "-c",
-        "echo \"$$dckpsw\" | docker login --username=\"$$dckusr\" --password-stdin"
-      ],
-      "secretEnv": [
-        "dckusr",
-        "dckpsw"
-      ]
+    "steps": [
+      {
+        "name": "gcr.io/cloud-builders/docker",
+        "entrypoint": "bash",
+        "args": [
+          "-c",
+          "echo \"$$dckpsw\" | docker login --username=\"$$dckusr\" --password-stdin"
+        ],
+        "secretEnv": [
+          "dckusr",
+          "dckpsw"
+        ]
+      }
+    ],
+    "availableSecrets": {
+      "dckusr": {
+        "secretEnv": "dckusr",
+        "kmsKeyName": "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"
+      },
+      "dckpsw": {
+        "secretEnv": "dckpsw",
+        "kmsKeyName": "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
+      }
     }
-  ],
-  "availableSecrets": [
-    {
-      "secretEnv": "dckusr",
-      "kmsKeyName": "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"
-    },
-    {
-      "secretEnv": "dckpsw",
-      "kmsKeyName": "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
-    }
-  ]
-}
+  }
+  
