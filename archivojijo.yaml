@@ -64,6 +64,6 @@ images:
 
 availableSecrets:
   - secretEnv: 'dckusr'
-    kmsKeyName: 'projects/still-descent-423419-c7/secrets/dckusr/versions/1'
+    kmsKeyName: 'projects/still-descent-423419-c7/secrets/dckusr/versions/latest'
   - secretEnv: 'dckpsw'
-    kmsKeyName: 'projects/still-descent-423419-c7/secrets/dckpsw/versions/1'
+    kmsKeyName: 'projects/still-descent-423419-c7/secrets/dckpsw/versions/latest'
