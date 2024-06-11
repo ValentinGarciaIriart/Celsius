@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "sh node_modules/.bin/jest"
+    "test": "sh node_modules/.bin/jest",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",

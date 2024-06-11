@@ -1,5 +1,8 @@
 body {
     font-family: Arial, sans-serif;
+    background: url('images/pelada.jpg') no-repeat center center fixed;
+    background-size: cover;
+      
 }
 
 .container {
@@ -14,4 +17,14 @@ button {
 
 #result {
     margin-top: 20px;
+}
+
+h1{
+    color:rgb(86, 21, 206);
+}
+p{
+    font-weight: bolder;
+    font-size: x-large;
+    color:rgb(196, 63, 63);
+    
 }
