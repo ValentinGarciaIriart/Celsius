@@ -16,11 +16,11 @@
     "availableSecrets": {
       "dckusr": {
         "secretEnv": "dckusr",
-        "kmsKeyName": "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"
+        "kmsKeyName": "projects/395145178509/secrets/dckusr/versions/latest"
       },
       "dckpsw": {
         "secretEnv": "dckpsw",
-        "kmsKeyName": "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
+        "kmsKeyName": "projects/395145178509/secrets/dckpsw/versions/latest"
       }
     }
   }
