@@ -54,8 +54,8 @@ steps:
       - '-c'
       - |
         az login --service-principal -u "$$AZURE_CLIENT_ID" -p "$$AZURE_CLIENT_SECRET" --tenant "$$AZURE_TENANT_ID"
-        az aks get-credentials --resource-group YOUR_RESOURCE_GROUP --name YOUR_AKS_CLUSTER_NAME
-    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID']
+        az aks get-credentials --resource-group "$$AKS_RESOURCE_GROUP" --name $_AKS_CLUSTER_NAME --overwrite-existing
+    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
 
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
@@ -73,3 +73,5 @@ availableSecrets:
     env: "AZURE_CLIENT_SECRET"
   - versionName: "projects/still-descent-423419-c7/secrets/aztenant/versions/latest"
     env: "AZURE_TENANT_ID"
+  - versionName: "projects/still-descent-423419-c7/secrets/azrg/versions/latest"
+    env: "AKS_RESOURCE_GROUP"
