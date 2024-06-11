@@ -75,4 +75,5 @@ availableSecrets:
     env: "AZURE_TENANT_ID"
   - versionName: "projects/still-descent-423419-c7/secrets/azrg/versions/latest"
     env: "AKS_RESOURCE_GROUP"
+
     
