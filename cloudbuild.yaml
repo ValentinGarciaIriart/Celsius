@@ -61,8 +61,8 @@ steps:
     args:
       - '-c'
       - |
-        if kubectl get service celsiusfahr-service -n valenfahr 2>/dev/null && kubectl get deployment celsiusfahr-deployment -n valenfahr 2>/dev/null; then
-          kubectl set image deployment/celsiusfahr-deployment celsiusfahr-container=us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2 -n valenfahr
+        if kubectl get deployment -n valenfahr 2>/dev/null || kubectl get service -n valenfahr 2>/dev/null; then
+          kubectl apply -f deployment.yaml -n valenfahr --force
         else
           kubectl apply -f deployment.yaml -n valenfahr
         fi
