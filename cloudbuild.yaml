@@ -38,7 +38,7 @@ steps:
     args:
       - '-c'
       - |
-        echo "$$DOCKER_PASSWORD" | docker login -u "$$DOCKER_USER" --password-stdin
+        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
     secretEnv: ['DOCKER_USER', 'DOCKER_PASSWORD']
   
   # Step 7: Push the image to Docker Hub
@@ -63,7 +63,20 @@ steps:
       - '3000'
       - '--allow-unauthenticated'
 
-  # Step 9: Eliminar el namespace existente (si lo hay)
+  # Step 9: Configurar kubectl para acceder a tu clúster de GKE
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'container'
+      - 'clusters'
+      - 'get-credentials'
+      - '--project=still-descent-423419-c7'
+      - '--zone=$_CLUSTER_ZONE'
+      - '$_CLUSTER_NAME'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
+
+  # Step 10: Eliminar el namespace existente (si lo hay)
   - name: 'gcr.io/cloud-builders/kubectl'
     entrypoint: 'bash'
     args:
@@ -71,14 +84,14 @@ steps:
       - |
         kubectl delete namespace valenfahr || echo "Namespace valenfahr does not exist, continuing..."
   
-  # Step 10: Crear un nuevo namespace
+  # Step 11: Crear un nuevo namespace
   - name: 'gcr.io/cloud-builders/kubectl'
     args:
       - 'create'
       - 'namespace'
       - 'valenfahr'
   
-  # Step 11: Aplicar el manifiesto de Kubernetes
+  # Step 12: Aplicar el manifiesto de Kubernetes
   - name: 'gcr.io/cloud-builders/kubectl'
     args:
       - 'apply'
