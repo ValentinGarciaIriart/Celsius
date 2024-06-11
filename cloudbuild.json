@@ -7,9 +7,9 @@
           "projects/395145178509/secrets/dckusr/versions/latest",
           "--format=json"
         ],
-        "outputs": {
-          "dckusr": "$.data.username"
-        }
+        "env": [
+          "DCKUSR=$(echo \"$.data.username\" | jq -r .)"
+        ]
       },
       {
         "name": "gcr.io/cloud-builders/secret-manager",
@@ -18,16 +18,16 @@
           "projects/395145178509/secrets/dckpsw/versions/latest",
           "--format=json"
         ],
-        "outputs": {
-          "dckpsw": "$.data.password"
-        }
+        "env": [
+          "DCKPSW=$(echo \"$.data.password\" | jq -r .)"
+        ]
       },
       {
         "name": "gcr.io/cloud-builders/docker",
         "entrypoint": "bash",
         "args": [
           "-c",
-          "echo \"${dckpsw}\" | docker login --username=\"${dckusr}\" --password-stdin"
+          "echo \"${DCKPSW}\" | docker login --username=\"${DCKUSR}\" --password-stdin"
         ]
       }
     ]
