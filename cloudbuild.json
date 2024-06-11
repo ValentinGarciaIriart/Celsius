@@ -1,21 +1,35 @@
 {
     "steps": [
       {
+        "name": "gcr.io/cloud-builders/secret-manager",
+        "args": [
+          "access",
+          "projects/395145178509/secrets/dckusr/versions/latest",
+          "--format=json"
+        ],
+        "outputs": {
+          "dckusr": "$.data.username"
+        }
+      },
+      {
+        "name": "gcr.io/cloud-builders/secret-manager",
+        "args": [
+          "access",
+          "projects/395145178509/secrets/dckpsw/versions/latest",
+          "--format=json"
+        ],
+        "outputs": {
+          "dckpsw": "$.data.password"
+        }
+      },
+      {
         "name": "gcr.io/cloud-builders/docker",
         "entrypoint": "bash",
         "args": [
           "-c",
-          "echo \"$$dckpsw\" | docker login --username=\"$$dckusr\" --password-stdin"
+          "echo \"${dckpsw}\" | docker login --username=\"${dckusr}\" --password-stdin"
         ]
       }
-    ],
-    "availableSecrets": {
-      "dckusr": {
-        "secretManager": "projects/395145178509/secrets/dckusr/versions/latest"
-      },
-      "dckpsw": {
-        "secretManager": "projects/395145178509/secrets/dckpsw/versions/latest"
-      }
-    }
+    ]
   }
   
