@@ -30,10 +30,10 @@ steps:
     entrypoint: 'bash'
     args:
       - '-c'
-      - 'echo "$PASSWORD" | docker login --username="$USERNAME" --password-stdin'
+      - 'echo "$$dckpsw" | docker login --username="$$dckusr" --password-stdin'
     secretEnv:
-      - 'USERNAME'
-      - 'PASSWORD'
+      - 'dckusr'
+      - 'dckpsw'
   # Step 7: Push the image to Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
     args:
