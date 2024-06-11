@@ -6,10 +6,6 @@
         "args": [
           "-c",
           "echo \"$$dckpsw\" | docker login --username=\"$$dckusr\" --password-stdin"
-        ],
-        "secretEnv": [
-          "dckusr",
-          "dckpsw"
         ]
       }
     ],
@@ -22,3 +18,4 @@
       }
     }
   }
+  
