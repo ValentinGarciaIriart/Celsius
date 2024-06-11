@@ -58,7 +58,7 @@ steps:
   # Step 9: reapply la configuracion existente
   - name: 'gcr.io/cloud-builders/kubectl'
     args:
-      - 'replace'
+      - 'apply'
       - '-f'
       - 'deployment.yaml'
       - '-n'
