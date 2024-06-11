@@ -15,11 +15,10 @@
     ],
     "availableSecrets": {
       "dckusr": {
-        "kmsKeyName": "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"
+        "secretManager": "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"
       },
       "dckpsw": {
-        "kmsKeyName": "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
+        "secretManager": "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
       }
     }
   }
-  
