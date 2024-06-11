@@ -1,0 +1,14 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
+  secretEnv: ['DOCKER_USER', 'DOCKER_PASSWORD']
+availableSecrets:
+  secretManager:
+  - versionName: "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"
+    env: "DOCKER_USER"
+  - versionName: "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
+    env: "DOCKER_PASSWORD"
