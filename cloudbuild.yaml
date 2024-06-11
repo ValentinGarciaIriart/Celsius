@@ -4,7 +4,7 @@ steps:
   args:
     - '-c'
     - |
-      echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
+      echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
   secretEnv: ['DOCKER_USER', 'DOCKER_PASSWORD']
 availableSecrets:
   secretManager:
@@ -12,3 +12,4 @@ availableSecrets:
     env: "DOCKER_USER"
   - versionName: "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
     env: "DOCKER_PASSWORD"
+
