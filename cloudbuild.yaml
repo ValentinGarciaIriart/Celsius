@@ -46,17 +46,16 @@ steps:
     args:
       - 'push'
       - 'valentingarciairiart/celfahr:js2'
-
-  - name: 'gcr.io/cloud-builders/gcloud'
+  
+  # Step 8: Autenticar con Azure y configurar kubectl
+  - name: 'mcr.microsoft.com/azure-cli'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        gcloud auth activate-service-account --key-file=/dev/null \
-          --client-id="$$AZURE_CLIENT_ID" \
-          --client-secret="$$AZURE_CLIENT_SECRET" \
-          --tenant-id="$$AZURE_TENANT_ID"
-    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET','AZURE_TENANT_ID']
+        az login --service-principal -u "$$AZURE_CLIENT_ID" -p "$$AZURE_CLIENT_SECRET" --tenant "$$AZURE_TENANT_ID"
+        az aks get-credentials --resource-group YOUR_RESOURCE_GROUP --name YOUR_AKS_CLUSTER_NAME
+    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID']
 
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
@@ -73,4 +72,4 @@ availableSecrets:
   - versionName: "projects/still-descent-423419-c7/secrets/azclisec/versions/latest"
     env: "AZURE_CLIENT_SECRET"
   - versionName: "projects/still-descent-423419-c7/secrets/aztenant/versions/latest"
-    env: "AZURE_TENANT_ID"  
+    env: "AZURE_TENANT_ID"
