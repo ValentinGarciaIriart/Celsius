@@ -55,14 +55,17 @@ steps:
       - '--port'
       - '3000'
       - '--allow-unauthenticated' 
-  # Step 9: reapply la configuracion existente
+  # Step 9: Conditional deployment or apply
   - name: 'gcr.io/cloud-builders/kubectl'
+    entrypoint: 'bash'
     args:
-      - 'apply'
-      - '-f'
-      - 'deployment.yaml'
-      - '-n'
-      - 'valenfahr'
+      - '-c'
+      - |
+        if kubectl get service celsiusfahr-service -n valenfahr 2>/dev/null && kubectl get deployment celsiusfahr-deployment -n valenfahr 2>/dev/null; then
+          kubectl set image deployment/celsiusfahr-deployment celsiusfahr-container=us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2 -n valenfahr
+        else
+          kubectl apply -f deployment.yaml -n valenfahr
+        fi
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
