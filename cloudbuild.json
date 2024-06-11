@@ -15,11 +15,9 @@
     ],
     "availableSecrets": {
       "dckusr": {
-        "secretEnv": "dckusr",
         "kmsKeyName": "projects/395145178509/secrets/dckusr/versions/latest"
       },
       "dckpsw": {
-        "secretEnv": "dckpsw",
         "kmsKeyName": "projects/395145178509/secrets/dckpsw/versions/latest"
       }
     }
