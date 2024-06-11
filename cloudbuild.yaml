@@ -55,6 +55,29 @@ steps:
       - '--port'
       - '3000'
       - '--allow-unauthenticated' 
+  # Step 9 (opcional): borrar la configuracion existente
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'delete'
+      - '-f'
+      - 'deployment.yaml'
+      - '-n'
+      - 'valenfahr'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
+  # Step 10: desplegar el servicio y deployment
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'apply'
+      - '-f'
+      - 'deployment.yaml'
+      - '-n'
+      - 'valenfahr'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
+    
 
 # List of images for Cloud Build to recognize
 images:
