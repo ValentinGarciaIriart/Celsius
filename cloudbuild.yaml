@@ -85,3 +85,4 @@ availableSecrets:
     env: "DOCKER_USER"
   - versionName: "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
     env: "DOCKER_PASSWORD"
+    
