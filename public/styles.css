@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: url('images/pelada.jpg') no-repeat center center fixed;
+    background: url('images/images.jpg') no-repeat center center fixed;
     background-size: cover;
       
 }
@@ -25,6 +25,6 @@ h1{
 p{
     font-weight: bolder;
     font-size: x-large;
-    color:rgb(68, 54, 180);
+    color:rgb(11, 85, 8);
     
 }
