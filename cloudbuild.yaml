@@ -72,21 +72,21 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js4'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
       - '.'
   
   # Step 4: Push the image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js4'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
   
   # Step 5: Tag the image for Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'tag'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js4'
-      - 'valentingarciairiart/celfahr:js4'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
+      - 'valentingarciairiart/celfahr:$_TAG'
   
   # Step 6: Login to Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
@@ -101,7 +101,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'valentingarciairiart/celfahr:js4'
+      - 'valentingarciairiart/celfahr:$_TAG'
   
   # Step 8: Deploy to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -110,7 +110,7 @@ steps:
       - 'deploy'
       - 'celsiusfahr-service'
       - '--image'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js4'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
       - '--region'
       - 'us-central1'
       - '--platform'
@@ -130,7 +130,7 @@ steps:
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
-      
+
   # Step 13: Autenticar con Azure y configurar kubectl
   - name: 'mcr.microsoft.com/azure-cli'
     entrypoint: 'bash'
@@ -151,8 +151,8 @@ steps:
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
 
 images:
-  - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js4'
-  - 'valentingarciairiart/celfahr:js4'
+  - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
+  - 'valentingarciairiart/celfahr:$_TAG'
 
 availableSecrets:
   secretManager:
