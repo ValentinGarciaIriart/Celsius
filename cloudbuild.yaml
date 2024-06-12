@@ -130,6 +130,16 @@ steps:
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
+      
+  # Step 13: Autenticar con Azure y configurar kubectl
+  - name: 'mcr.microsoft.com/azure-cli'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        az login --service-principal -u "$$AZURE_CLIENT_ID" -p "$$AZURE_CLIENT_SECRET" --tenant "$$AZURE_TENANT_ID"
+        az aks get-credentials --resource-group "$$AKS_RESOURCE_GROUP" --name $_AKS_CLUSTER_NAME
+    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
 
   # Step 15: Desplegar manifiesto YAML en el clúster de AKS
   - name: 'gcr.io/cloud-builders/kubectl'
