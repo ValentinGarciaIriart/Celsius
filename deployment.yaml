@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: celfahr-container
-          image: valentingarciairiart/celfahr:js8
+          image: valentingarciairiart/celfahr:js9
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
