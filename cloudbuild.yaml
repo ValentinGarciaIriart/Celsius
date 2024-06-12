@@ -30,7 +30,7 @@ steps:
     args:
       - 'tag'
       - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js3'
-      - 'valentingarciairiart/celfahr:js2'
+      - 'valentingarciairiart/celfahr:js3'
   
   # Step 6: Login to Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
@@ -45,7 +45,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'valentingarciairiart/celfahr:js2'
+      - 'valentingarciairiart/celfahr:js3'
   
   # Step 8: Deploy to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
