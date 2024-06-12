@@ -16,20 +16,20 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js3'
       - '.'
   
   # Step 4: Push the image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js3'
   
   # Step 5: Tag the image for Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'tag'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js3'
       - 'valentingarciairiart/celfahr:js2'
   
   # Step 6: Login to Docker Hub
@@ -54,7 +54,7 @@ steps:
       - 'deploy'
       - 'celsiusfahr-service'
       - '--image'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js3'
       - '--region'
       - 'us-central1'
       - '--platform'
@@ -141,8 +141,8 @@ steps:
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
 
 images:
-  - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js2'
-  - 'valentingarciairiart/celfahr:js2'
+  - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js3'
+  - 'valentingarciairiart/celfahr:js3'
 
 availableSecrets:
   secretManager:
