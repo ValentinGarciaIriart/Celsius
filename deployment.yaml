@@ -11,12 +11,10 @@ spec:
     metadata:
       labels:
         app: app-celfahr
-      annotations:
-        redeployTimestamp: "initial-deploy" # Esto se actualizará con el comando kubectl patch
     spec:
       containers:
         - name: celfahr-container
-          image: valentingarciairiart/celfahr:js9
+          image: valentingarciairiart/celfahr:v2
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
