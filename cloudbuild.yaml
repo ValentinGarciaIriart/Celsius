@@ -10,59 +10,7 @@ steps:
     entrypoint: 'npm'
     args: 
       - 'test'
-  
-  # Step 3: Build the Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'build'
-      - '-t'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js3'
-      - '.'
-  
-  # Step 4: Push the image to Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js3'
-  
-  # Step 5: Tag the image for Docker Hub
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'tag'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js3'
-      - 'valentingarciairiart/celfahr:js3'
-  
-  # Step 6: Login to Docker Hub
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        echo "$$DOCKER_PASSWORD" | docker login -u "$$DOCKER_USER" --password-stdin
-    secretEnv: ['DOCKER_USER', 'DOCKER_PASSWORD']
-  
-  # Step 7: Push the image to Docker Hub
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'valentingarciairiart/celfahr:js3'
-  
-  # Step 8: Deploy to Cloud Run
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'run'
-      - 'deploy'
-      - 'celsiusfahr-service'
-      - '--image'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js3'
-      - '--region'
-      - 'us-central1'
-      - '--platform'
-      - 'managed'
-      - '--port'
-      - '3000'
-      - '--allow-unauthenticated'
-  
+
   # Step 9: Configurar kubectl para acceder a tu clúster de GKE
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
@@ -96,18 +44,6 @@ steps:
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
-  
-  # Step 12: Aplicar el manifiesto de Kubernetes
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args:
-      - 'apply'
-      - '-f'
-      - 'deployment.yaml'
-      - '-n'
-      - 'valenfahr'
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
 
   # Step 13: Autenticar con Azure y configurar kubectl
   - name: 'mcr.microsoft.com/azure-cli'
@@ -130,6 +66,70 @@ steps:
         fi
         kubectl create namespace $_NAMESPACE
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
+  
+  # Step 3: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js4'
+      - '.'
+  
+  # Step 4: Push the image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js4'
+  
+  # Step 5: Tag the image for Docker Hub
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'tag'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js4'
+      - 'valentingarciairiart/celfahr:js4'
+  
+  # Step 6: Login to Docker Hub
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "$$DOCKER_PASSWORD" | docker login -u "$$DOCKER_USER" --password-stdin
+    secretEnv: ['DOCKER_USER', 'DOCKER_PASSWORD']
+  
+  # Step 7: Push the image to Docker Hub
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'valentingarciairiart/celfahr:js4'
+  
+  # Step 8: Deploy to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'celsiusfahr-service'
+      - '--image'
+      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js4'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--port'
+      - '3000'
+      - '--allow-unauthenticated'
+  
+  # Step 12: Aplicar el manifiesto de Kubernetes a GKE
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'apply'
+      - '-f'
+      - 'deployment.yaml'
+      - '-n'
+      - 'valenfahr'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLUSTER_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
 
   # Step 15: Desplegar manifiesto YAML en el clúster de AKS
   - name: 'gcr.io/cloud-builders/kubectl'
@@ -141,8 +141,8 @@ steps:
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
 
 images:
-  - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js3'
-  - 'valentingarciairiart/celfahr:js3'
+  - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:js4'
+  - 'valentingarciairiart/celfahr:js4'
 
 availableSecrets:
   secretManager:

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: celfahr-container
-          image: valentingarciairiart/celfahr:js3
+          image: valentingarciairiart/celfahr:js4
           ports:
             - containerPort: 3000
           resources:

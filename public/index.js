@@ -9,5 +9,5 @@ async function convert() {
     });
     const data = await response.json();
     const resultElement = document.getElementById('result');
-    resultElement.innerHTML = `<p style="color: ${data.color};">Result: ${data.fahrenheit} Fahrenheit</p>`;
+    resultElement.innerHTML = `<p style="color: ${data.color};">Resultado: ${data.fahrenheit} Fahrenheit</p>`;
 }
