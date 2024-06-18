@@ -136,6 +136,7 @@ steps:
       - |
         kubectl apply -f k8s/deployment.yaml --namespace $_NAMESPACE
         kubectl apply -f k8s/service.yaml --namespace $_NAMESPACE
+        kubectl apply -f k8s/ingress.yaml 
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
 
 images:

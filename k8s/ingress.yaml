@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: celfahr-ingress
+  namespace: valenfahr
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  rules:
+    - host: valentincelsius.modelodevops.sociuschile.cl
+      http:
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: celfahr-service
+                port:
+                  number: 80
