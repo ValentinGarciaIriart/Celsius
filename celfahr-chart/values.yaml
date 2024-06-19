@@ -1,0 +1,29 @@
+# Default values for celfahr-chart.
+# You can override these values in the helm command or in a separate values.yaml file.
+
+# Deployment configuration
+deployment:
+  name: app-celfahr
+  replicaCount: 1
+  image:
+    repository: valentingarciairiart/celfahr
+    tag: v3
+    pullPolicy: Always
+  containerName: celfahr-container
+  containerPort: 3000  # Puerto del contenedor
+
+# Service configuration
+service:
+  name: celfahr-service
+  type: ClusterIP  # Cambiando de LoadBalancer a ClusterIP
+  port: 80
+  targetPort: 3000
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: nginx
+  host: valentincelsius.modelodevops.sociuschile.cl
+  tlsSecretName: valentincelsius-secret-socius
+  path: /?(.*)
+  pathType: Prefix
