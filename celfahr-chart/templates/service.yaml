@@ -1,16 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "my-helm-chart.fullname" . }}
+  name: {{ include "your-chart.serviceName" . }}
   labels:
-    app: {{ include "my-helm-chart.name" . }}
-    chart: "{{ include "my-helm-chart.chart" . }}"
-    release: "{{ .Release.Name }}"
-    heritage: "{{ .Release.Service }}"
+    app: {{ include "your-chart.name" . }}
 spec:
+  type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: 3000
-      protocol: TCP
+      targetPort: {{ .Values.service.targetPort }}
   selector:
-    app: {{ include "my-helm-chart.name" . }}
+    app: {{ include "your-chart.name" . }}

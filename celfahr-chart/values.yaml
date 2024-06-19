@@ -1,29 +1,40 @@
-# Default values for celfahr-chart.
-# You can override these values in the helm command or in a separate values.yaml file.
+replicaCount: 1
 
-# Deployment configuration
-deployment:
-  name: app-celfahr
-  replicaCount: 1
-  image:
-    repository: valentingarciairiart/celfahr
-    tag: v3
-    pullPolicy: Always
-  containerName: celfahr-container
-  containerPort: 3000  # Puerto del contenedor
+image:
+  repository: valentingarciairiart/celfahr
+  tag: v3
+  pullPolicy: Always
 
-# Service configuration
+resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+
+
+ingress:
+  host: valentincelsius.modelodevops.sociuschile.cl
+  secretName: valentincelsius-secret-socius
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  paths:
+    - path: /?(.*)
+      pathType: Prefix
+      backend:
+        service:
+          name: {{ include "your-chart.serviceName" . }}
+          port:
+            number: 80
+  className: nginx  # Variable para la clase del Ingress
+
 service:
-  name: celfahr-service
-  type: ClusterIP  # Cambiando de LoadBalancer a ClusterIP
+  type: ClusterIP
   port: 80
   targetPort: 3000
 
-# Ingress configuration
-ingress:
-  enabled: true
-  className: nginx
-  host: valentincelsius.modelodevops.sociuschile.cl
-  tlsSecretName: valentincelsius-secret-socius
-  path: /?(.*)
-  pathType: Prefix
+namespace: valenfahr
+
+containerPort: 3000

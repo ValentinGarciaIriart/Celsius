@@ -1,27 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.deployment.name }}
+  name: {{ include "your-chart.fullname" . }}
 spec:
-  replicas: {{ .Values.deployment.replicaCount }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.deployment.name }}
+      app: {{ include "your-chart.name" . }}
   template:
     metadata:
       labels:
-        app: {{ .Values.deployment.name }}
+        app: {{ include "your-chart.name" . }}
     spec:
       containers:
-        - name: {{ .Values.deployment.containerName }}  # Nombre del contenedor
-          image: {{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}
-          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.deployment.containerPort }}  # Puerto del contenedor
-          resources:
-            requests:
-              cpu: "{{ .Values.deployment.resources.requests.cpu }}"
-              memory: "{{ .Values.deployment.resources.requests.memory }}"
-            limits:
-              cpu: "{{ .Values.deployment.resources.limits.cpu }}"
-              memory: "{{ .Values.deployment.resources.limits.memory }}"
+            - containerPort: {{ .Values.containerPort }}
+      resources: {{ toYaml .Values.resources | nindent 12 }}
