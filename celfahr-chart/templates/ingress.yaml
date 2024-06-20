@@ -1,16 +1,24 @@
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.service.name }}
-  namespace: {{ .Values.namespace }}
-  annotations: {{ toYaml .Values.ingress.annotations | indent 4 }}
+  name:
+    "{ .Values.service.name }": null
+  namespace:
+    "{ .Values.namespace }": null
+  annotations:
+    "{ toYaml .Values.ingress.annotations | indent 4 }": null
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName:
+    "{ .Values.ingress.className }": null
   tls:
-  - hosts:
-    - {{ .Values.ingress.host }}
-    secretName: {{ .Values.ingress.secretName }}
+    - hosts:
+        - "{ .Values.ingress.host }": null
+      secretName:
+        "{ .Values.ingress.secretName }": null
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host:
+        "{ .Values.ingress.host }": null
       http:
-        paths: {{ toYaml .Values.ingress.paths | indent 10 }}
+        paths:
+          "{ toYaml .Values.ingress.paths | indent 10 }": null
