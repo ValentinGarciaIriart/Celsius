@@ -1,19 +1,22 @@
-replicaCount: 1
+# Default values for celfahr-chart.
+# You can override these values in the helm command or in a separate values.yaml file.
 
+# Deployment configuration
+replicaCount: 1
 image:
   repository: valentingarciairiart/celfahr
-  tag: v3
+  tag: v2
   pullPolicy: Always
 
 resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 500m
-      memory: 512Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
 
-
+# Ingress configuration
 ingress:
   host: valentincelsius.modelodevops.sociuschile.cl
   secretName: valentincelsius-secret-socius
@@ -25,16 +28,20 @@ ingress:
       pathType: Prefix
       backend:
         service:
-          name: {{ include "your-chart.serviceName" . }}
+          name: celfahr-service  # Nombre del servicio para el Ingress
           port:
             number: 80
   className: nginx  # Variable para la clase del Ingress
 
+# Service configuration
 service:
+  name: celfahr-service
   type: ClusterIP
   port: 80
   targetPort: 3000
 
+# Deployment configuration
 namespace: valenfahr
-
 containerPort: 3000
+containerName: celfahr-container
+deploymentName: app-celfahr

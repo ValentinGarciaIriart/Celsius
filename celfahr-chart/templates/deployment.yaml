@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "your-chart.fullname" . }}
+  name: {{ .Values.deploymentName }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "your-chart.name" . }}
+      app: {{ .Values.deploymentName }}
   template:
     metadata:
       labels:
-        app: {{ include "your-chart.name" . }}
+        app: {{ .Values.deploymentName }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Values.containerName }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
