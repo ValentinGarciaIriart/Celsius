@@ -1,15 +1,13 @@
 steps:
-  # Step 1: Install dependencies
+  # Step 1: Install dependencies (example with Node.js)
   - name: 'node'
     entrypoint: 'npm'
-    args: 
-      - 'install'
-  
-  # Step 2: Run tests
+    args: ['install']
+
+  # Step 2: Run tests (example with Node.js)
   - name: 'node'
     entrypoint: 'npm'
-    args: 
-      - 'test'
+    args: ['test']
 
   # Step 3: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
@@ -18,35 +16,34 @@ steps:
       - '-t'
       - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
       - '.'
-  
+
   # Step 4: Push the image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
-  
+
   # Step 5: Tag the image for Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'tag'
       - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
       - 'valentingarciairiart/celfahr:$_TAG'
-  
+
   # Step 6: Login to Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'sh'
     args:
       - '-c'
-      - |
-        echo "$$DOCKER_PASSWORD" | docker login -u "$$DOCKER_USER" --password-stdin
+      - 'echo "$$DOCKER_PASSWORD" | docker login -u "$$DOCKER_USER" --password-stdin'
     secretEnv: ['DOCKER_USER', 'DOCKER_PASSWORD']
-  
+
   # Step 7: Push the image to Docker Hub
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'valentingarciairiart/celfahr:$_TAG'
-  
+
   # Step 8: Deploy to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
@@ -63,7 +60,7 @@ steps:
       - '3000'
       - '--allow-unauthenticated'
 
-  # Step 12: Autenticar con Azure y configurar kubectl para AKS
+  # Step 12: Authenticate with Azure and configure kubectl for AKS
   - name: 'mcr.microsoft.com/azure-cli'
     entrypoint: 'bash'
     args:
@@ -73,7 +70,7 @@ steps:
         az aks get-credentials --resource-group "$$AKS_RESOURCE_GROUP" --name $_AKS_CLUSTER_NAME
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
 
-  # Step 13: Verificar si el namespace existe y crearlo si no
+  # Step 13: Check if namespace exists and create if not
   - name: 'gcr.io/cloud-builders/kubectl'
     entrypoint: 'bash'
     args:
@@ -85,8 +82,8 @@ steps:
           kubectl create namespace $_NAMESPACE
         fi
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
-    
-  # Step 14: Instalar o actualizar el Helm Chart desde GitHub Pages
+
+  # Step 14: Install or upgrade Helm Chart from GitHub Pages
   - name: 'alpine/helm'
     entrypoint: 'sh'
     args:
@@ -96,7 +93,7 @@ steps:
           helm repo add $_REPO_NAME $_REPO_HELM_GIT
         fi
         helm repo update
-        if helm ls --namespace $_NAMESPACE | grep '$_RELEASE'; then
+        if helm ls -n $_NAMESPACE | grep -q '$_RELEASE'; then
           echo "Release $_RELEASE exists. Upgrading..."
           helm upgrade $_RELEASE $_REPO_NAME/$_CHART_NAME --namespace $_NAMESPACE
         else
@@ -108,7 +105,7 @@ steps:
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
   - 'valentingarciairiart/celfahr:$_TAG'
-  
+
 availableSecrets:
   secretManager:
     - versionName: "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"
@@ -123,5 +120,3 @@ availableSecrets:
       env: "AZURE_TENANT_ID"
     - versionName: "projects/still-descent-423419-c7/secrets/azrg/versions/latest"
       env: "AKS_RESOURCE_GROUP"
-
-
