@@ -112,4 +112,13 @@ availableSecrets:
   secretManager:
   - versionName: "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"
     env: "DOCKER_USER"
- 
+  - versionName: "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
+    env: "DOCKER_PASSWORD"
+  - versionName: "projects/still-descent-423419-c7/secrets/azclid/versions/latest"
+    env: "AZURE_CLIENT_ID"
+  - versionName: "projects/still-descent-423419-c7/secrets/azclisec/versions/latest"
+    env: "AZURE_CLIENT_SECRET"
+  - versionName: "projects/still-descent-423419-c7/secrets/aztenant/versions/latest"
+    env: "AZURE_TENANT_ID"
+  - versionName: "projects/still-descent-423419-c7/secrets/azrg/versions/latest"
+    env: "AKS_RESOURCE_GROUP"
