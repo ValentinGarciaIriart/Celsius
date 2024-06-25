@@ -30,6 +30,7 @@ steps:
       - |
         if ! helm repo list | grep '$_REPO_HELM_GIT'; then
           helm repo add $_REPO_NAME $_REPO_HELM_GIT
+        fi
         helm install $_RELEASE $_REPO_NAME/$_CHART_NAME --namespace $_NAMESPACE
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
 
