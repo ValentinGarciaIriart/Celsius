@@ -86,7 +86,7 @@ steps:
         fi
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
     
-  # Step 14: Instalar Helm Chart desde GitHub Pages si no hay un release
+  # Step 14: Instalar o actualizar el Helm Chart desde GitHub Pages
   - name: 'alpine/helm'
     entrypoint: 'sh'
     args:
@@ -95,7 +95,14 @@ steps:
         if ! helm repo list | grep '$_REPO_HELM_GIT'; then
           helm repo add $_REPO_NAME $_REPO_HELM_GIT
         fi
-        helm install $_RELEASE $_REPO_NAME/$_CHART_NAME --namespace $_NAMESPACE
+        helm repo update
+        if helm ls --namespace $_NAMESPACE | grep '$_RELEASE'; then
+          echo "Release $_RELEASE exists. Upgrading..."
+          helm upgrade $_RELEASE $_REPO_NAME/$_CHART_NAME --namespace $_NAMESPACE
+        else
+          echo "Release $_RELEASE does not exist. Installing..."
+          helm install $_RELEASE $_REPO_NAME/$_CHART_NAME --namespace $_NAMESPACE
+        fi
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
 
 images:
@@ -116,4 +123,5 @@ availableSecrets:
       env: "AZURE_TENANT_ID"
     - versionName: "projects/still-descent-423419-c7/secrets/azrg/versions/latest"
       env: "AKS_RESOURCE_GROUP"
+
 
