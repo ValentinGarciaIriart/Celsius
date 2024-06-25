@@ -72,7 +72,7 @@ steps:
       - |
         az login --service-principal -u "$$AZURE_CLIENT_ID" -p "$$AZURE_CLIENT_SECRET" --tenant "$$AZURE_TENANT_ID"
         az aks get-credentials --resource-group "$$AKS_RESOURCE_GROUP" --name $_AKS_CLUSTER_NAME
-    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
+    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
 
   # Step 13: Verificar si el namespace existe y crearlo si no
   - name: 'gcr.io/cloud-builders/kubectl'
@@ -85,24 +85,24 @@ steps:
         else
           kubectl create namespace $_NAMESPACE
         fi
-    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
+    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
 
-
-  - name: 'gcr.io/cloud-builders/helm'
-    entrypoint: 'bash'
+  # Step 14: Instalar o actualizar Helm Chart desde GitHub Pages
+  - name: 'alpine/helm'
+    entrypoint: 'sh'
     args:
       - '-c'
       - |
-        if ! helm repo list | grep $_REPO_HELM_GIT; then
+        if ! helm repo list | grep '$_REPO_HELM_GIT'; then
           helm repo add $_REPO_NAME $_REPO_HELM_GIT
         fi
         helm repo update
-        if helm ls -n $_NAMESPACE | grep mychart; then
+        if helm ls -n $_NAMESPACE | grep '$_HELM_NAME'; then
           helm upgrade $_HELM_NAME $_REPO_NAME/$_CHART_NAME --namespace $_NAMESPACE
         else
           helm install $_HELM_NAME $_REPO_NAME/$_CHART_NAME --namespace $_NAMESPACE
         fi
-    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
+    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
 
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
@@ -112,13 +112,4 @@ availableSecrets:
   secretManager:
   - versionName: "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"
     env: "DOCKER_USER"
-  - versionName: "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
-    env: "DOCKER_PASSWORD"
-  - versionName: "projects/still-descent-423419-c7/secrets/azclid/versions/latest"
-    env: "AZURE_CLIENT_ID"
-  - versionName: "projects/still-descent-423419-c7/secrets/azclisec/versions/latest"
-    env: "AZURE_CLIENT_SECRET"
-  - versionName: "projects/still-descent-423419-c7/secrets/aztenant/versions/latest"
-    env: "AZURE_TENANT_ID"
-  - versionName: "projects/still-descent-423419-c7/secrets/azrg/versions/latest"
-    env: "AKS_RESOURCE_GROUP"
+ 
