@@ -39,8 +39,6 @@ steps:
         fi
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
 
-images:
-  - 'valentingarciairiart/celfahr:$_TAG'
 
 availableSecrets:
   secretManager:
