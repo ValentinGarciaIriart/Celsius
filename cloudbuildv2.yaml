@@ -32,10 +32,10 @@ steps:
           helm repo add $_REPO_NAME $_REPO_HELM_GIT
         fi
         helm repo update
-        if helm ls -n $_NAMESPACE | grep '$_HELM_NAME'; then
-          helm upgrade $_RELEASE $_REPO_NAME/$_CHART_NAME --namespace $_NAMESPACE
-        else
+        if ! helm ls -n $_NAMESPACE | grep '$_HELM_NAME'; then
           helm install $_RELEASE $_REPO_NAME/$_CHART_NAME --namespace $_NAMESPACE
+        else
+          helm upgrade $_RELEASE $_REPO_NAME/$_CHART_NAME --namespace $_NAMESPACE
         fi
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
 
