@@ -63,7 +63,9 @@ steps:
       - '3000'
       - '--allow-unauthenticated'
 
-
+images:
+  - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
+  - 'valentingarciairiart/celfahr:$_TAG'
 availableSecrets:
   secretManager:
   - versionName: "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"

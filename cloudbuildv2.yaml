@@ -39,15 +39,7 @@ steps:
         fi
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
 
-
-  - name: 'alpine/helm'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - helm repo list
-
 images:
-  - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
   - 'valentingarciairiart/celfahr:$_TAG'
 
 availableSecrets:
