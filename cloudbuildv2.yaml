@@ -39,14 +39,13 @@ steps:
         fi
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
 
-
 availableSecrets:
   secretManager:
-  - versionName: "projects/still-descent-423419-c7/secrets/azclid/versions/latest"
-    env: "AZURE_CLIENT_ID"
-  - versionName: "projects/still-descent-423419-c7/secrets/azclisec/versions/latest"
-    env: "AZURE_CLIENT_SECRET"
-  - versionName: "projects/still-descent-423419-c7/secrets/aztenant/versions/latest"
-    env: "AZURE_TENANT_ID"
-  - versionName: "projects/still-descent-423419-c7/secrets/azrg/versions/latest"
-    env: "AKS_RESOURCE_GROUP"
+    - versionName: "projects/still-descent-423419-c7/secrets/azclid/versions/latest"
+      env: "AZURE_CLIENT_ID"
+    - versionName: "projects/still-descent-423419-c7/secrets/azclisec/versions/latest"
+      env: "AZURE_CLIENT_SECRET"
+    - versionName: "projects/still-descent-423419-c7/secrets/aztenant/versions/latest"
+      env: "AZURE_TENANT_ID"
+    - versionName: "projects/still-descent-423419-c7/secrets/azrg/versions/latest"
+      env: "AKS_RESOURCE_GROUP"
