@@ -1,69 +1,4 @@
 steps:
-  # Step 1: Install dependencies
-  - name: 'node'
-    entrypoint: 'npm'
-    args: 
-      - 'install'
-  
-  # Step 2: Run tests
-  - name: 'node'
-    entrypoint: 'npm'
-    args: 
-      - 'test'
-
-  # Step 3: Build the Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'build'
-      - '-t'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
-      - '.'
-  
-  # Step 4: Push the image to Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
-  
-  # Step 5: Tag the image for Docker Hub
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'tag'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
-      - 'valentingarciairiart/celfahr:$_TAG'
-  
-  # Step 6: Login to Docker Hub
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        echo "$$DOCKER_PASSWORD" | docker login -u "$$DOCKER_USER" --password-stdin
-    secretEnv: ['DOCKER_USER', 'DOCKER_PASSWORD']
-  
-  # Step 7: Push the image to Docker Hub
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'valentingarciairiart/celfahr:$_TAG'
-  
-  # Step 8: Deploy to Cloud Run
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'run'
-      - 'deploy'
-      - 'celsiusfahr-service'
-      - '--image'
-      - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
-      - '--region'
-      - 'us-central1'
-      - '--platform'
-      - 'managed'
-      - '--port'
-      - '3000'
-      - '--allow-unauthenticated'
-
-
   # Step 12: Autenticar con Azure y configurar kubectl para AKS
   - name: 'mcr.microsoft.com/azure-cli'
     entrypoint: 'bash'
@@ -92,12 +27,6 @@ steps:
     entrypoint: 'sh'
     args:
       - '-c'
-      - helm repo list
-  # Step 14: Instalar o actualizar Helm Chart desde GitHub Pages
-  - name: 'alpine/helm'
-    entrypoint: 'sh'
-    args:
-      - '-c'
       - |
         if ! helm repo list | grep '$_REPO_HELM_GIT'; then
           helm repo add $_REPO_NAME $_REPO_HELM_GIT
@@ -110,16 +39,19 @@ steps:
         fi
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID', 'AKS_RESOURCE_GROUP']
 
+
+  - name: 'alpine/helm'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - helm repo list
+
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
   - 'valentingarciairiart/celfahr:$_TAG'
 
 availableSecrets:
   secretManager:
-  - versionName: "projects/still-descent-423419-c7/secrets/dckusr/versions/latest"
-    env: "DOCKER_USER"
-  - versionName: "projects/still-descent-423419-c7/secrets/dckpsw/versions/latest"
-    env: "DOCKER_PASSWORD"
   - versionName: "projects/still-descent-423419-c7/secrets/azclid/versions/latest"
     env: "AZURE_CLIENT_ID"
   - versionName: "projects/still-descent-423419-c7/secrets/azclisec/versions/latest"
