@@ -153,6 +153,16 @@ steps:
         kubectl apply -f k8s/service.yaml --namespace $_NAMESPACE
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
 
+  # Step 14: Desplegar manifiesto YAML en el clúster de AKS
+  - name: 'gcr.io/cloud-builders/kubectl'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        kubectl apply -f k8s/deployment.yaml --namespace $_NAMESPACE
+        kubectl apply -f k8s/service.yaml --namespace $_NAMESPACE
+        kubectl apply -f k8s/ingress.yaml 
+    secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
 images:
   - 'us-docker.pkg.dev/still-descent-423419-c7/celfahr/celfahr:$_TAG'
   - 'valentingarciairiart/celfahr:$_TAG'

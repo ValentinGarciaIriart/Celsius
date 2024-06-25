@@ -87,15 +87,21 @@ steps:
         fi
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
 
-  # Step 14: Desplegar manifiesto YAML en el clúster de AKS
-  - name: 'gcr.io/cloud-builders/kubectl'
+
+  - name: 'gcr.io/cloud-builders/helm'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        kubectl apply -f k8s/deployment.yaml --namespace $_NAMESPACE
-        kubectl apply -f k8s/service.yaml --namespace $_NAMESPACE
-        kubectl apply -f k8s/ingress.yaml 
+        if ! helm repo list | grep $_REPO_HELM_GIT; then
+          helm repo add $_REPO_NAME $_REPO_HELM_GIT
+        fi
+        helm repo update
+        if helm ls -n $_NAMESPACE | grep mychart; then
+          helm upgrade $_HELM_NAME $_REPO_NAME/$_CHART_NAME --namespace $_NAMESPACE
+        else
+          helm install $_HELM_NAME $_REPO_NAME/$_CHART_NAME --namespace $_NAMESPACE
+        fi
     secretEnv: ['AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET', 'AZURE_TENANT_ID','AKS_RESOURCE_GROUP']
 
 images:
