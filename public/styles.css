@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: url('images/images.jpg') no-repeat center center fixed;
+    background: url('images/paisaje.jpg') no-repeat center center fixed;
     background-size: cover;
       
 }
@@ -22,6 +22,9 @@ button {
 
 p{
     font-weight: bolder;
-    font-size: x-large;
-    
+    font-size: x-large; 
+}
+
+h1, p {
+    color: rgb(181, 14, 14);
 }
