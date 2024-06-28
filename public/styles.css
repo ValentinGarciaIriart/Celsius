@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: url('images/paisaje.jpg') no-repeat center center fixed;
+    background: url('images/arg.jpg') no-repeat center center fixed;
     background-size: cover;
       
 }
@@ -26,5 +26,5 @@ p{
 }
 
 h1, p {
-    color: rgb(45, 92, 231);
+    color: rgb(231, 45, 123);
 }
